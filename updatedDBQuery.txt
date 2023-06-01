@@ -1,0 +1,15 @@
+Add below code in index.js to store data in heroku DB
+return new_client.query(`
+      BEGIN;
+      SET TRANSACTION READ WRITE;
+      INSERT INTO public.customer_dialogue_tb(Dialogue_sid, User_identifier, Created_at, Channel, User_message, Bot_message)
+      VALUES (
+        '${message && message.sid ? message.sid.replace("'", "''") : ''}',
+        '${sendTo.replace("'", "''")}',
+        '${formattedDate.replace("'", "''")}',
+        'sms',
+        '${JSON.stringify(text, null, 2).replace("'", "''")}',
+        '${JSON.stringify(dialogflowResponse, null, 2).replace("'", "''")}'
+      );
+      COMMIT;
+    `);
